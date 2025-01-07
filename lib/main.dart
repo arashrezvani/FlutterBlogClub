@@ -3,8 +3,16 @@ import 'package:blogclub/data.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  //تغییر رنگ نویگیشن گوشی و اپ بار خود گوشی
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
   runApp(const MyApp());
 }
 
@@ -46,7 +54,7 @@ class MyApp extends StatelessWidget {
                 fontSize: 24,
                 color: primaryTextColor,
                 fontWeight: FontWeight.w700),
-            headlineSmall: TextStyle(
+            headlineSmall: const TextStyle(
               fontFamily: defultFontFamily,
               fontWeight: FontWeight.w700,
               fontSize: 18,
@@ -57,8 +65,19 @@ class MyApp extends StatelessWidget {
               color: primaryTextColor,
               fontWeight: FontWeight.w700,
             ),
+            labelLarge: const TextStyle(
+              fontFamily: defultFontFamily,
+              fontWeight: FontWeight.w700,
+              fontSize: 10,
+              color: Color(0xff7B8BB2),
+            ),
           )),
-      home: const HomeScreen(),
+      home: Stack(
+        children: [
+          const Positioned.fill(child: HomeScreen()),
+          Positioned(bottom: 0, right: 0, left: 0, child: _BottomNavigation()),
+        ],
+      ),
     );
   }
 }
@@ -484,6 +503,103 @@ class _Post extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 85,
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              height: 65,
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                  blurRadius: 20,
+                  color: Color(0xff9B8487).withOpacity(0.3), //شادوی پشت منو
+                )
+              ]),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _BottomNavigationItem(
+                      iconFileName: 'Home.png',
+                      activeIconFileName: 'Home.png',
+                      title: 'Home'),
+                  _BottomNavigationItem(
+                      iconFileName: 'Articles.png',
+                      activeIconFileName: 'Articles.png',
+                      title: 'Article'),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  _BottomNavigationItem(
+                      iconFileName: 'Search.png',
+                      activeIconFileName: 'Search.png',
+                      title: 'Search'),
+                  _BottomNavigationItem(
+                      iconFileName: 'Menu.png',
+                      activeIconFileName: 'Menu.png',
+                      title: 'Menu'),
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              width: 65,
+              height: 85,
+              alignment: Alignment.topCenter,
+              child: Container(
+                height: 65,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(32),
+                    color: Color(0xff376AED),
+                    border: Border.all(
+                        color: Colors.white,
+                        width: 4)), //یک حاشیه سفید دور دایره وسط منو
+                child: Image.asset('assets/img/icons/plus.png'),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _BottomNavigationItem extends StatelessWidget {
+  final String iconFileName;
+  final String activeIconFileName;
+  final String title;
+
+  const _BottomNavigationItem(
+      {super.key,
+      required this.iconFileName,
+      required this.activeIconFileName,
+      required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/img/icons/${iconFileName}'),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
+      ],
     );
   }
 }
