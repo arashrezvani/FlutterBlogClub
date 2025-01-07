@@ -1,5 +1,7 @@
 import 'package:blogclub/carousel/carousel_slider.dart';
 import 'package:blogclub/data.dart';
+import 'package:blogclub/gen/assets.gen.dart';
+import 'package:blogclub/gen/fonts.gen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +19,17 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  static const defultFontFamily = 'Avenir';
+  //static const defultFontFamily = 'Avenir';
+
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final primaryTextColor = Color(0xff0D253C);
-    final secondaryTextColor = Color(0xff2D4379);
+    const primaryTextColor = Color(0xff0D253C);
+    const secondaryTextColor = Color(0xff2D4379);
+    const primaryColor = Color(0xff376AED);
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -32,41 +37,41 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           textTheme: TextTheme(
             labelMedium: TextStyle(
-                fontFamily: defultFontFamily,
+                fontFamily: FontFamily.avenir,
                 color: secondaryTextColor,
                 fontWeight: FontWeight.w200,
                 fontSize: 18),
             labelSmall: TextStyle(
-                fontFamily: defultFontFamily,
+                fontFamily: FontFamily.avenir,
                 color: primaryTextColor,
                 fontWeight: FontWeight.w400,
                 fontSize: 14),
             titleMedium: TextStyle(
-                fontFamily: defultFontFamily,
+                fontFamily: FontFamily.avenir,
                 fontWeight: FontWeight.bold,
                 color: primaryTextColor),
             displayMedium: TextStyle(
-                fontFamily: defultFontFamily,
+                fontFamily: FontFamily.avenir,
                 color: secondaryTextColor,
                 fontSize: 12),
             headlineMedium: TextStyle(
-                fontFamily: defultFontFamily,
+                fontFamily: FontFamily.avenir,
                 fontSize: 24,
                 color: primaryTextColor,
                 fontWeight: FontWeight.w700),
             headlineSmall: const TextStyle(
-              fontFamily: defultFontFamily,
+              fontFamily: FontFamily.avenir,
               fontWeight: FontWeight.w700,
               fontSize: 18,
             ),
             headlineLarge: TextStyle(
-              fontFamily: defultFontFamily,
+              fontFamily: FontFamily.avenir,
               fontSize: 20,
               color: primaryTextColor,
               fontWeight: FontWeight.w700,
             ),
             labelLarge: const TextStyle(
-              fontFamily: defultFontFamily,
+              fontFamily: FontFamily.avenir,
               fontWeight: FontWeight.w700,
               fontSize: 10,
               color: Color(0xff7B8BB2),
@@ -105,11 +110,12 @@ class HomeScreen extends StatelessWidget {
                       'Hi, Janathan!',
                       style: themeData.textTheme.labelMedium,
                     ),
-                    Image.asset(
-                      'assets/img/icons/notification.png',
-                      width: 32,
-                      height: 32,
-                    ),
+                    Assets.img.icons.notification.image(width: 32, height: 32),
+                    // Image.asset(
+                    //   Assets.img.icons.notification.path,
+                    //   width: 32,
+                    //   height: 32,
+                    // ),
                   ],
                 ),
               ),
@@ -434,7 +440,7 @@ class _Post extends StatelessWidget {
                   Text(
                     post.caption,
                     style: const TextStyle(
-                      fontFamily: MyApp.defultFontFamily,
+                      fontFamily: FontFamily.avenir,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                       color: Color(0xff376AED),
