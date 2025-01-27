@@ -1,7 +1,10 @@
+import 'package:blogclub/article.dart';
 import 'package:blogclub/carousel/carousel_slider.dart';
 import 'package:blogclub/data.dart';
 import 'package:blogclub/gen/assets.gen.dart';
 import 'package:blogclub/gen/fonts.gen.dart';
+import 'package:blogclub/home.dart';
+import 'package:blogclub/profile.dart';
 import 'package:blogclub/splash.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,10 +42,22 @@ class MyApp extends StatelessWidget {
             primary: primaryColor,
             onPrimary: Colors.white,
             onSurface: primaryTextColor,
+            onSecondary: primaryTextColor,
+            onSecondaryFixed: primaryColor,
+            onError: Color(0xff7B8BB2),
             onBackground: primaryTextColor,
             background: primaryColor,
           ),
           useMaterial3: true,
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.white,
+              foregroundColor: primaryTextColor,
+              //elevation: 0, //shadowe شادوو رو صفر ميكنيم كه شادوو نداشته باشه
+              titleSpacing: 32 //فاصله از كنارها
+              ),
+          snackBarTheme: const SnackBarThemeData(
+            backgroundColor: primaryColor,
+          ),
           textTheme: TextTheme(
             labelMedium: TextStyle(
                 fontFamily: FontFamily.avenir,
@@ -91,12 +106,82 @@ class MyApp extends StatelessWidget {
       //     Positioned(bottom: 0, right: 0, left: 0, child: _BottomNavigation()),
       //   ],
       // ),
-      home: const SplashScreen(),
+      home: const MainScreen(),
+    );
+  }
+}
+
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+const int homeIndex = 0;
+const int articleIndex = 1;
+const int searchIndex = 2;
+const int menuIndex = 3;
+const double bottomNavigationHeight = 65;
+
+class _MainScreenState extends State<MainScreen> {
+  int selectedScreenIndex = homeIndex;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            bottom: bottomNavigationHeight,
+            child: IndexedStack(
+              index: selectedScreenIndex,
+              children: const [
+                HomeScreen(),
+                ArticleScreen(),
+                SearchScreen(),
+                profileScreen(),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _BottomNavigation(
+              selectedIndex: selectedScreenIndex,
+              onTap: (int index) {
+                setState(() {
+                  selectedScreenIndex = index;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'Search Screen',
+        style: Theme.of(context).textTheme.headlineLarge,
+      ),
     );
   }
 }
 
 class _BottomNavigation extends StatelessWidget {
+  final Function(int index) onTap;
+  final int selectedIndex;
+
+  const _BottomNavigation(
+      {super.key, required this.onTap, required this.selectedIndex});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -108,35 +193,55 @@ class _BottomNavigation extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: Container(
-              height: 65,
+              height: bottomNavigationHeight,
               decoration: BoxDecoration(color: Colors.white, boxShadow: [
                 BoxShadow(
                   blurRadius: 20,
                   color: Color(0xff9B8487).withOpacity(0.3), //شادوی پشت منو
                 )
               ]),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _BottomNavigationItem(
-                      iconFileName: 'Home.png',
-                      activeIconFileName: 'Home.png',
-                      title: 'Home'),
-                  _BottomNavigationItem(
-                      iconFileName: 'Articles.png',
-                      activeIconFileName: 'Articles.png',
-                      title: 'Article'),
-                  SizedBox(
-                    width: 8,
+                  BottomNavigationItem(
+                    iconFileName: 'Home.png',
+                    activeIconFileName: 'HomeActive.png',
+                    title: 'Home',
+                    isActive: selectedIndex == homeIndex,
+                    onTap: () {
+                      onTap(homeIndex);
+                    },
                   ),
-                  _BottomNavigationItem(
-                      iconFileName: 'Search.png',
-                      activeIconFileName: 'Search.png',
-                      title: 'Search'),
-                  _BottomNavigationItem(
-                      iconFileName: 'Menu.png',
-                      activeIconFileName: 'Menu.png',
-                      title: 'Menu'),
+                  BottomNavigationItem(
+                    iconFileName: 'Articles.png',
+                    activeIconFileName: 'ArticlesActive.png',
+                    title: 'Article',
+                    isActive: selectedIndex == articleIndex,
+                    onTap: () {
+                      onTap(articleIndex);
+                    },
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  BottomNavigationItem(
+                    iconFileName: 'Search.png',
+                    activeIconFileName: 'SearchActive.png',
+                    title: 'Search',
+                    isActive: selectedIndex == searchIndex,
+                    onTap: () {
+                      onTap(searchIndex);
+                    },
+                  ),
+                  BottomNavigationItem(
+                    iconFileName: 'Menu.png',
+                    activeIconFileName: 'MenuActive.png',
+                    title: 'Menu',
+                    isActive: selectedIndex == menuIndex,
+                    onTap: () {
+                      onTap(menuIndex);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -164,31 +269,45 @@ class _BottomNavigation extends StatelessWidget {
   }
 }
 
-class _BottomNavigationItem extends StatelessWidget {
+class BottomNavigationItem extends StatelessWidget {
   final String iconFileName;
   final String activeIconFileName;
   final String title;
+  final bool isActive;
+  final Function() onTap;
 
-  const _BottomNavigationItem(
+  const BottomNavigationItem(
       {super.key,
       required this.iconFileName,
       required this.activeIconFileName,
-      required this.title});
+      required this.title,
+      required this.onTap,
+      required this.isActive});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset('assets/img/icons/${iconFileName}'),
-        const SizedBox(
-          height: 4,
+    final ThemeData themeData = Theme.of(context);
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+                'assets/img/icons/${isActive ? activeIconFileName : iconFileName}'),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              title,
+              style: themeData.textTheme.labelLarge!.apply(
+                  color: isActive
+                      ? themeData.colorScheme.primary
+                      : themeData.colorScheme.onError),
+            ),
+          ],
         ),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
-      ],
+      ),
     );
   }
 }

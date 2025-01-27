@@ -32,4 +32,8 @@ git commit -m "add fist comment"
 git push -u origin main
 
 
+
+هر وقت در عكس فونتي چيزي اضافه كرديم به صفحه اسست چون جنريتور داره بايد خط كد زير را بزنيم تا بياره
+dart run build_runner build
+
 -->

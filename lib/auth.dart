@@ -1,4 +1,5 @@
 import 'package:blogclub/gen/assets.gen.dart';
+import 'package:blogclub/home.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -143,7 +144,10 @@ class _Login extends StatelessWidget {
           height: 24,
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            // Navigator.of(context).pushReplacement(
+            //     MaterialPageRoute(builder: (context) => const HomeScreen()));
+          },
           style: ButtonStyle(
             shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12))),
