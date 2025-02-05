@@ -1,3 +1,4 @@
+import 'package:blogclub/article.dart';
 import 'package:blogclub/carousel/carousel_slider.dart';
 import 'package:blogclub/data.dart';
 import 'package:blogclub/gen/assets.gen.dart';
@@ -330,106 +331,113 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 16,
-              color: Color(0x1a5282FF),
-            )
-          ]),
-      child: Row(
-        children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.asset(
-                'assets/img/posts/small/${post.imageFileName}',
-                width: 120,
-              )),
-          Expanded(
-            //برای اینکه محتوا تکس دوم از کادر بیرون نزنه
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Column(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // باعث میشه از ارتفاع بیاد وسط
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, //باعث میشه از افقی بیاد اول
-                children: [
-                  Text(
-                    post.caption,
-                    style: const TextStyle(
-                      fontFamily: FontFamily.avenir,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      color: Color(0xff376AED),
+    return InkWell(
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ArticleScreen(),
+        ),
+      ),
+      child: Container(
+        margin: EdgeInsets.fromLTRB(32, 8, 32, 8),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: const [
+              BoxShadow(
+                blurRadius: 16,
+                color: Color(0x1a5282FF),
+              )
+            ]),
+        child: Row(
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  'assets/img/posts/small/${post.imageFileName}',
+                  width: 120,
+                )),
+            Expanded(
+              //برای اینکه محتوا تکس دوم از کادر بیرون نزنه
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: Column(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // باعث میشه از ارتفاع بیاد وسط
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, //باعث میشه از افقی بیاد اول
+                  children: [
+                    Text(
+                      post.caption,
+                      style: const TextStyle(
+                        fontFamily: FontFamily.avenir,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        color: Color(0xff376AED),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    post.title,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        CupertinoIcons.hand_thumbsup,
-                        size: 16,
-                        color: Theme.of(context).textTheme.bodyMedium!.color,
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        post.likes,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Icon(
-                        CupertinoIcons.clock,
-                        size: 16,
-                        color: Theme.of(context).textTheme.bodyMedium!.color,
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        post.time,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      Expanded(
-                        //برای اینکه ایکون بیفته اخرش
-                        child: Container(
-                          alignment:
-                              Alignment.centerRight, //ایکون از سمت راست باشه
-                          child: Icon(
-                            post.isBookmarked
-                                ? CupertinoIcons.bookmark_fill
-                                : CupertinoIcons.bookmark,
-                            size: 16,
-                            color:
-                                Theme.of(context).textTheme.bodyMedium!.color,
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      post.title,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          CupertinoIcons.hand_thumbsup,
+                          size: 16,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          post.likes,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Icon(
+                          CupertinoIcons.clock,
+                          size: 16,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          post.time,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        Expanded(
+                          //برای اینکه ایکون بیفته اخرش
+                          child: Container(
+                            alignment:
+                                Alignment.centerRight, //ایکون از سمت راست باشه
+                            child: Icon(
+                              post.isBookmarked
+                                  ? CupertinoIcons.bookmark_fill
+                                  : CupertinoIcons.bookmark,
+                              size: 16,
+                              color:
+                                  Theme.of(context).textTheme.bodyMedium!.color,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
