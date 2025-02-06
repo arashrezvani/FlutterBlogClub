@@ -186,22 +186,33 @@ class _MainScreenState extends State<MainScreen> {
                   // ArticleScreen(),
                   // SearchScreen(),
                   // profileScreen(),
-                  Navigator(
-                      key: _homeKey,
-                      onGenerateRoute: (settings) => MaterialPageRoute(
-                          builder: (context) => HomeScreen())),
-                  Navigator(
-                      key: _articleKey,
-                      onGenerateRoute: (settings) => MaterialPageRoute(
-                          builder: (context) => ArticleScreen())),
-                  Navigator(
-                      key: _searchKey,
-                      onGenerateRoute: (settings) => MaterialPageRoute(
-                          builder: (context) => SimpleScreen())),
-                  Navigator(
-                      key: _menuKey,
-                      onGenerateRoute: (settings) => MaterialPageRoute(
-                          builder: (context) => profileScreen())),
+                  _navigator(_homeKey, homeIndex, const HomeScreen()),
+                  _navigator(_articleKey, articleIndex, const ArticleScreen()),
+                  _navigator(
+                      _searchKey,
+                      searchIndex,
+                      const SimpleScreen(
+                        tabName: 'Search',
+                      )),
+                  _navigator(_menuKey, menuIndex, const profileScreen()),
+                  // Navigator(
+                  //     key: _articleKey,
+                  //     onGenerateRoute: (settings) => MaterialPageRoute(
+                  //         builder: (context) => Offstage(
+                  //             offstage: selectedScreenIndex != articleIndex,
+                  //             child: ArticleScreen()))),
+                  // Navigator(
+                  //     key: _searchKey,
+                  //     onGenerateRoute: (settings) => MaterialPageRoute(
+                  //         builder: (context) => Offstage(
+                  //             offstage: selectedScreenIndex != searchIndex,
+                  //             child: SimpleScreen()))),
+                  // Navigator(
+                  //     key: _menuKey,
+                  //     onGenerateRoute: (settings) => MaterialPageRoute(
+                  //         builder: (context) => Offstage(
+                  //             offstage: selectedScreenIndex != menuIndex,
+                  //             child: profileScreen()))),
                 ],
               ),
             ),
@@ -225,13 +236,26 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+
+  Widget _navigator(GlobalKey key, int index, Widget child) {
+    //برای اینکه حافظه زیاد مصرف نکنه این خط پایین رو بعد ریترن مینویسیم
+    return key.currentState == null && selectedScreenIndex != index
+        ? Container()
+        : Navigator(
+            key: key,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+                builder: (context) => Offstage(
+                      offstage: selectedScreenIndex !=
+                          index, //براي كارايي و حافظه كمتر استفاده كردن
+                      child: child,
+                    )));
+  }
 }
 
-int screenNumber = 1;
-
 class SimpleScreen extends StatelessWidget {
-  const SimpleScreen({super.key});
-
+  const SimpleScreen({super.key, required this.tabName, this.screenNumber = 1});
+  final String tabName;
+  final int screenNumber;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -239,15 +263,17 @@ class SimpleScreen extends StatelessWidget {
       children: [
         Center(
           child: Text(
-            'Screen #$screenNumber',
+            'Tab: $tabName, Screen #$screenNumber',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
         ),
         ElevatedButton(
             onPressed: () {
-              screenNumber++;
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SimpleScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SimpleScreen(
+                        tabName: tabName,
+                        screenNumber: screenNumber + 1,
+                      )));
             },
             child: Text('Click Me')),
       ],

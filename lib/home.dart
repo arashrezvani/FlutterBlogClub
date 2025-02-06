@@ -3,6 +3,7 @@ import 'package:blogclub/carousel/carousel_slider.dart';
 import 'package:blogclub/data.dart';
 import 'package:blogclub/gen/assets.gen.dart';
 import 'package:blogclub/gen/fonts.gen.dart';
+import 'package:blogclub/main.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -108,59 +109,63 @@ class _CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(left, 0, right, 0),
-      child: Stack(
-        children: [
-          Positioned.fill(
-              top: 100,
-              right: 65,
-              left: 65,
-              bottom: 24,
+    return InkWell(
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => SimpleScreen(tabName: 'Category'))),
+      child: Container(
+        margin: EdgeInsets.fromLTRB(left, 0, right, 0),
+        child: Stack(
+          children: [
+            Positioned.fill(
+                top: 100,
+                right: 65,
+                left: 65,
+                bottom: 24,
+                child: Container(
+                  decoration: const BoxDecoration(boxShadow: [
+                    BoxShadow(blurRadius: 20, color: Color(0xaa0D253C)),
+                  ]),
+                )),
+            Positioned.fill(
               child: Container(
-                decoration: const BoxDecoration(boxShadow: [
-                  BoxShadow(blurRadius: 20, color: Color(0xaa0D253C)),
-                ]),
-              )),
-          Positioned.fill(
-            child: Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-              // ignore: sort_child_properties_last
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(32),
-                child: Image.asset(
-                  'assets/img/posts/large/${category.imageFileName}',
-                  fit: BoxFit.cover,
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+                // ignore: sort_child_properties_last
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(32),
+                  child: Image.asset(
+                    'assets/img/posts/large/${category.imageFileName}',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(32),
+                  gradient: const LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.center,
+                      colors: [
+                        Color(0xff0D253C),
+                        Colors.transparent,
+                      ]),
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(32),
                 ),
               ),
-              foregroundDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(32),
-                gradient: const LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: [
-                      Color(0xff0D253C),
-                      Colors.transparent,
-                    ]),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(32),
-              ),
             ),
-          ),
-          Positioned(
-            bottom: 48,
-            left: 32,
-            child: Text(
-              category.title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall!
-                  .apply(color: Colors.white),
-            ),
-          )
-        ],
+            Positioned(
+              bottom: 48,
+              left: 32,
+              child: Text(
+                category.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall!
+                    .apply(color: Colors.white),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
